@@ -56,20 +56,28 @@ public class Board extends JComponent implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            hero.position.incrementX();
             hero.cellType = CellType.HERO_RIGHT;
+            if (hero.position.getX() != BOARD_SIZE - 1) {
+                hero.position.incrementX();
+            }
         }
         if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            hero.position.decrementX();
             hero.cellType = CellType.HERO_LEFT;
+            if (hero.position.getX() != 0) {
+                hero.position.decrementX();
+            }
         }
         if (e.getKeyCode() == KeyEvent.VK_UP) {
-            hero.position.decrementY();
             hero.cellType = CellType.HERO_UP;
+            if (hero.position.getY() != 0) {
+                hero.position.decrementY();
+            }
         }
         if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-            hero.position.incrementY();
             hero.cellType = CellType.HERO_DOWN;
+            if (hero.position.getY() != BOARD_SIZE - 1) {
+                hero.position.incrementY();
+            }
         }
 
         this.repaint();
