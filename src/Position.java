@@ -14,4 +14,20 @@ public class Position {
     public int getY() {
         return y;
     }
+
+    public void incrementX() {
+       x++;
+    }
+
+    public void decrementX() {
+        x--;
+    }
+
+    public void incrementY() {
+        y++;
+    }
+
+    public void decrementY() {
+        y--;
+    }
 }

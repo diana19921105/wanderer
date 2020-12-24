@@ -16,6 +16,5 @@ public class Cell {
     public void draw(Graphics graphics, Resource resource, int imageSize) {
         graphics.drawImage(resource.getImage(this.cellType),
                 position.getX() * imageSize, position.getY() * imageSize, null);
-
     }
 }

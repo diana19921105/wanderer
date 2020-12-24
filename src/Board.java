@@ -43,7 +43,7 @@ public class Board extends JComponent implements KeyListener {
     public void paint(Graphics graphics) {
         super.paint(graphics);
         grid.draw(graphics, resource, IMAGE_SIZE);
-        hero.draw(graphics, resource);
+        hero.draw(graphics, resource, IMAGE_SIZE);
 //        graphics.fillRect(12, 12, 5, 5);
 //        graphics.drawString("Health point", 5, 5);
     }
@@ -55,7 +55,24 @@ public class Board extends JComponent implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+            hero.position.incrementX();
+            hero.cellType = CellType.HERO_RIGHT;
+        }
+        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+            hero.position.decrementX();
+            hero.cellType = CellType.HERO_LEFT;
+        }
+        if (e.getKeyCode() == KeyEvent.VK_UP) {
+            hero.position.decrementY();
+            hero.cellType = CellType.HERO_UP;
+        }
+        if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+            hero.position.incrementY();
+            hero.cellType = CellType.HERO_DOWN;
+        }
 
+        this.repaint();
     }
 
     @Override
