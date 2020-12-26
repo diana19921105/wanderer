@@ -7,11 +7,13 @@ import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Board extends JComponent implements KeyListener {
 
+    public static final int BOARD_SIZE = 10;
     protected static final int IMAGE_SIZE = 72;
-    protected static final int BOARD_SIZE = 10;
     protected Resource resource;
     protected Grid grid;
     protected Hero hero;
@@ -27,7 +29,6 @@ public class Board extends JComponent implements KeyListener {
         stats = new Stats(1, 8, 8, 6, 10);
         initSkeletons(3);
         initBoss();
-
         setPreferredSize(new Dimension(BOARD_SIZE * IMAGE_SIZE + 240, BOARD_SIZE * IMAGE_SIZE));
         setVisible(true);
     }
@@ -40,12 +41,13 @@ public class Board extends JComponent implements KeyListener {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
         frame.pack();
-        // Here is how you can add a key event listener
-        // The board object will be notified when hitting any key
-        // with the system calling one of the below 3 methods
         frame.addKeyListener(board);
-        // Notice (at the top) that we can only do this
-        // because this Board class (the type of the board object) is also a KeyListener
+
+        TimerTask task = new MoveEnemiesTask(board);
+        Timer timer = new Timer();
+        long delay = 500L;
+        timer.scheduleAtFixedRate(task, delay, 500);
+
     }
 
     private void initSkeletons(int number) {
@@ -61,7 +63,7 @@ public class Board extends JComponent implements KeyListener {
         }
     }
 
-    private boolean isPositionOccupied(Position position) {
+    public boolean isPositionOccupied(Position position) {
         return grid.isWall(position) || isSkeleton(position) || position.equals(hero.position);
     }
 
