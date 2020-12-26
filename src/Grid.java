@@ -39,4 +39,8 @@ public class Grid {
             grid.get(wall.getX()).get(wall.getY()).setCellType(CellType.WALL);
         }
     }
+
+    public boolean isWall(Position position) {
+        return grid.get(position.getX()).get(position.getY()).cellType == CellType.WALL;
+    }
 }
