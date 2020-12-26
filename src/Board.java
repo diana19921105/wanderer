@@ -4,6 +4,9 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class Board extends JComponent implements KeyListener {
 
@@ -12,12 +15,14 @@ public class Board extends JComponent implements KeyListener {
     protected Resource resource;
     protected Grid grid;
     protected Hero hero;
+    protected List<Skeleton> skeletons;
 
     public Board() {
         resource = new Resource();
         grid = new Grid(BOARD_SIZE);
         grid.setWall();
         hero = new Hero();
+        initSkeletons(3);
         setPreferredSize(new Dimension(BOARD_SIZE * IMAGE_SIZE, BOARD_SIZE * IMAGE_SIZE));
         setVisible(true);
     }
@@ -37,13 +42,41 @@ public class Board extends JComponent implements KeyListener {
         // Notice (at the top) that we can only do this
         // because this Board class (the type of the board object) is also a KeyListener
     }
-    // To be a KeyListener the class needs to have these 3 methods in it
+
+    private void initSkeletons(int number) {
+        skeletons = new ArrayList<>();
+        Random random = new Random();
+
+        for (int i = 0; i < number; i++) {
+            Position position;
+            do {
+                position = new Position(random.nextInt(BOARD_SIZE), random.nextInt(BOARD_SIZE));
+            } while (isPositionOccupied(position));
+            skeletons.add(new Skeleton(position));
+        }
+    }
+
+    private boolean isPositionOccupied(Position position) {
+        return grid.isWall(position) || isSkeleton(position) || position.equals(hero.position);
+    }
+
+    private boolean isSkeleton(Position position) {
+        for (Skeleton skeleton : skeletons) {
+            if (skeleton.position.equals(position)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     @Override
     public void paint(Graphics graphics) {
         super.paint(graphics);
         grid.draw(graphics, resource, IMAGE_SIZE);
         hero.draw(graphics, resource, IMAGE_SIZE);
+        for (Skeleton skeleton : skeletons) {
+            skeleton.draw(graphics, resource, IMAGE_SIZE);
+        }
 //        graphics.fillRect(12, 12, 5, 5);
 //        graphics.drawString("Health point", 5, 5);
     }
