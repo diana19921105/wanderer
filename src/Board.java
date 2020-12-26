@@ -17,15 +17,18 @@ public class Board extends JComponent implements KeyListener {
     protected Hero hero;
     protected List<Skeleton> skeletons;
     protected Boss boss;
+    protected Stats stats;
 
     public Board() {
         resource = new Resource();
         grid = new Grid(BOARD_SIZE);
         grid.setWall();
         hero = new Hero();
+        stats = new Stats(1, 8, 8, 6, 10);
         initSkeletons(3);
         initBoss();
-        setPreferredSize(new Dimension(BOARD_SIZE * IMAGE_SIZE, BOARD_SIZE * IMAGE_SIZE));
+
+        setPreferredSize(new Dimension(BOARD_SIZE * IMAGE_SIZE + 240, BOARD_SIZE * IMAGE_SIZE));
         setVisible(true);
     }
 
@@ -78,7 +81,7 @@ public class Board extends JComponent implements KeyListener {
         do {
             position = new Position(random.nextInt(BOARD_SIZE), random.nextInt(BOARD_SIZE));
         } while (isPositionOccupied(position));
-        
+
         boss = new Boss(position);
     }
 
@@ -91,8 +94,7 @@ public class Board extends JComponent implements KeyListener {
             skeleton.draw(graphics, resource, IMAGE_SIZE);
         }
         boss.draw(graphics, resource, IMAGE_SIZE);
-//        graphics.fillRect(12, 12, 5, 5);
-//        graphics.drawString("Health point", 5, 5);
+        stats.drawStats(graphics);
     }
 
     @Override
